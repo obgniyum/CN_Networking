@@ -1,0 +1,6 @@
+framework module CN_Networking {
+  umbrella header "CN_Networking-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -7,12 +7,15 @@
 //
 
 #import "XXAppDelegate.h"
+#import "CN_Networking.h"
 
 @implementation XXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [CN_HTTP CN_DEBUG:CN_URL_SCHEME_HTTP host:@"192.168.0.136" port:@"8080"];
+    
+    
     return YES;
 }
 
