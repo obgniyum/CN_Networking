@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'CN_Networking_Example' do
+  pod 'CN_Networking', :path => '../'
+
+  target 'CN_Networking_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
