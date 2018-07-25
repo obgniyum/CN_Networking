@@ -29,8 +29,12 @@
         http.params = @{
                         @"k" : @"v"
                         };
-        http.header = @{
-                        @"Cookie" : @"k1=v1; k2=v2"
+//        http.header = @{
+//                        @"Cookie" : @"k1=v1; k2=v2"
+//                        };
+        http.cookie = @{
+                        @"k" : @"v",
+                        @"k2" : @"v2"
                         };
         http.timeout = 30.f;
     } success:^(id result) {
