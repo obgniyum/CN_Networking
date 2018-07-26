@@ -1,57 +1,48 @@
 
 
-#import "CN_NET_RequestListViewController.h"
+#import "CN_NET_RequestViewController.h"
 #import "CN_NET_Float.h"
-#import "CN_NET_RequestDetailViewController.h"
+#import "CN_NET_ResponseViewController.h"
 #import "CN_NET_Util.h"
 
-@interface CN_NET_RequestListViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface CN_NET_RequestViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *mainTableView;
 
 @end
 
-@implementation CN_NET_RequestListViewController
+@implementation CN_NET_RequestViewController
 
 // MARK:- Life
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupViews];
+}
+
+// MARK:- UI
+- (void)setupViews {
+    self.view.backgroundColor = UIColor.whiteColor;
     
-    self.view.backgroundColor = UIColor.yellowColor;
-    
-    self.title = @"Request List";
-    UIBarButtonItem *item_left = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(_action_back)];
+    self.title = @"Request";
+    UIBarButtonItem *item_left = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(action_back)];
     self.navigationItem.leftBarButtonItem = item_left;
     
-    UIBarButtonItem *item_right = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(_action_reload)];
+    UIBarButtonItem *item_right = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(action_reload)];
     self.navigationItem.rightBarButtonItem = item_right;
     
     [self.view addSubview:self.mainTableView];
-    
 }
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [[CN_NET_Float CN_Instance] cn_show:NO];
-}
-
-- (void)dealloc {
-    [[CN_NET_Float CN_Instance] cn_show:YES];
-}
-
 
 // MARK:- Action
-
-- (void)_action_back {
+- (void)action_back {
     [self.navigationController dismissViewControllerAnimated:true completion:nil];
 }
 
-- (void)_action_reload {
+- (void)action_reload {
     [self.mainTableView reloadData];
 }
 
 // MARK:- Delegate
-
 // MARK: └ UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [CN_NET_Float CN_Instance].dataSource.count;
@@ -78,9 +69,8 @@
 }
 
 // MARK: └ UITableViewDelegate
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CN_NET_RequestDetailViewController *detail = [[CN_NET_RequestDetailViewController alloc] init];
+    CN_NET_ResponseViewController *detail = [[CN_NET_ResponseViewController alloc] init];
     NSDictionary *data = [CN_NET_Float CN_Instance].dataSource[indexPath.row];
     if (data[@"success"]) {
         detail.successData = data;
@@ -89,6 +79,8 @@
     }
     [self.navigationController pushViewController:detail animated:YES];
 }
+
+// MARK:- Lazy
 
 - (UITableView *)mainTableView {
     if (!_mainTableView) {

@@ -36,11 +36,11 @@
 /** URL */
 @property (nonatomic, copy) NSString *url;
 /** url.scheme */
-@property (nonatomic, assign) CN_URL_SCHEME scheme;
-/** url.host */
-@property (nonatomic, copy) NSString *host;
-/** url.port */
-@property (nonatomic, copy) NSString *port;
+//@property (nonatomic, assign) CN_URL_SCHEME scheme;
+///** url.host */
+//@property (nonatomic, copy) NSString *host;
+///** url.port */
+//@property (nonatomic, copy) NSString *port;
 /** url.path */
 @property (nonatomic, copy) NSString *path;
 

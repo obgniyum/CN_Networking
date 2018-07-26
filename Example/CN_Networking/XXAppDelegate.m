@@ -7,8 +7,9 @@
 //
 
 #import "XXAppDelegate.h"
-#import "CN_Networking.h"
+//#import "CN_Networking.h"
 #import "CN_NET_Float.h"
+#import "XX_Network.h"
 
 @implementation XXAppDelegate
 
@@ -17,6 +18,7 @@
     
     [[CN_NET_Float CN_Instance] cn_show:YES];
     [CN_Network CN_DEBUG:CN_URL_SCHEME_HTTP host:@"192.168.0.136" port:@"8080"];
+    [XX_Network CN_DEBUG:CN_URL_SCHEME_HTTP host:@"192.168.0.136" port:@"8080"];
     
     return YES;
 }

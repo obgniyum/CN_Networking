@@ -15,11 +15,11 @@ static const NSInteger CN_NET_RECONNECT_COUNT = 3;
  - CN_NET_ENV_LOCAL:    本地（临时调试使用）
  - CN_NET_ENV_RELEASE:  线上
  */
-typedef NS_ENUM(NSUInteger, CN_NET_ENV) {
-    CN_NET_ENV_DEBUG,      // -D
-    CN_NET_ENV_TEST,
-    CN_NET_ENV_LOCAL,
-    CN_NET_ENV_RELEASE
+typedef NS_ENUM(NSUInteger, CN_NET_ENV_TYPE) {
+    CN_NET_ENV_TYPE_DEBUG = 0,      // -D
+    CN_NET_ENV_TYPE_TEST,
+    CN_NET_ENV_TYPE_RELEASE,
+    CN_NET_ENV_TYPE_CUSTOM,
 };
 
 /**
@@ -45,10 +45,7 @@ typedef NS_ENUM(NSUInteger, CN_URL_SCHEME) {
     CN_URL_SCHEME_HTTPS,
 };
 
-
 static NSString *kCN_NET_ENV_TYPE = @"kCN_NET_ENV_TYPE";  //
-static NSString *kCN_NET_ENV_LOC_SCHEME = @"kCN_NET_ENV_LOC_SCHEME";
-static NSString *kCN_NET_ENV_LOC_HOST = @"kCN_NET_ENV_LOC_HOST";
-static NSString *kCN_NET_ENV_LOC_PORT = @"kCN_NET_ENV_LOC_PORT";
+static NSString *kCN_NET_ENV_TYPE_CUSTOM = @"kCN_NET_ENV_TYPE_CUSTOM"; //
 
 #endif

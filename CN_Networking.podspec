@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CN_Networking'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'A short description of CN_Networking.'
 
 # This description is used to generate tags and improve search results.
@@ -41,6 +41,10 @@ TODO: Add long description of the pod here.
   s.subspec 'Float' do |s2|
       s2.source_files = 'CN_Networking/Classes/Float/*.{h,m}'
       s2.dependency 'CN_Networking/Network'
+  end
+  
+  s.subspec 'Readable' do |s3|
+      s3.source_files = 'CN_Networking/Classes/Readable/*.{h,m}'
   end
   
   s.resource_bundles = {

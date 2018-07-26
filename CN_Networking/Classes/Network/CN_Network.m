@@ -3,8 +3,8 @@
 #import "AFNetworking.h"
 #import "CN_NET_Util.h"
 #import "CN_NET_Queue.h"
-#import "CN_NET_URL.h"
 #import "CN_NET_Service.h"
+#import "CN_Network+Environment.h"
 
 @interface CN_Network ()
 
@@ -24,15 +24,15 @@
 /**
  进度回调
  */
-@property (nonatomic, copy) void(^callback_progress)(CGFloat p);
+@property (nonatomic, copy) void(^progressBlock)(CGFloat p);
 /**
  成功回调
  */
-@property (nonatomic, copy) void(^callback_success)(id data);
+@property (nonatomic, copy) void(^successBlock)(id data);
 /**
  失败回调
  */
-@property (nonatomic, copy) void(^callback_failure)(NSString *errMsg);
+@property (nonatomic, copy) void(^failureBlock)(NSString *errMsg);
 
 @end
 
@@ -52,7 +52,7 @@
 + (void)CN_DEBUG:(CN_URL_SCHEME)scheme
             host:(NSString *)host
             port:(NSString *)port {
-    [self _envConfig:CN_NET_ENV_DEBUG
+    [self config_env:CN_NET_ENV_TYPE_DEBUG
           scheme:scheme
             host:host
             port:port];
@@ -61,7 +61,7 @@
 + (void)CN_TEST:(CN_URL_SCHEME)scheme
            host:(NSString *)host
            port:(NSString *)port {
-    [self _envConfig:CN_NET_ENV_TEST
+    [self config_env:CN_NET_ENV_TYPE_TEST
           scheme:scheme
             host:host
             port:port];
@@ -70,27 +70,10 @@
 + (void)CN_RELEASE:(CN_URL_SCHEME)scheme
               host:(NSString *)host
               port:(NSString *)port {
-    [self _envConfig:CN_NET_ENV_RELEASE
+    [self config_env:CN_NET_ENV_TYPE_RELEASE
           scheme:scheme
             host:host
             port:port];
-}
-
-+ (void)_envConfig:(CN_NET_ENV)env
-        scheme:(CN_URL_SCHEME)scheme
-          host:(NSString *)host
-          port:(NSString *)port {
-    // 0.1 key
-    NSString *key_id = NSStringFromClass(self);
-    NSString *key_env = [NSString stringWithFormat:@"%lu", (unsigned long)env];
-    NSString *key = [NSString stringWithFormat:@"%@_%@", key_id, key_env];
-    // 0.2 value
-    CN_NET_URL *model = [CN_NET_URL new];
-    model.scheme = [CN_NET_Util CN_StringFromScheme:scheme];
-    model.host = host;
-    model.port = port;
-    // 1 save
-    [[CN_NET_Service CN_Instance].env setObject:model forKey:key];
 }
 
 // MARK: └ 其他配置
@@ -123,7 +106,7 @@
     NSLog(@"\nRequesting...\n[U-R-L]:%@\n[Method]:%@\n[Params]:%@\n[Header]:%@\n[Cookie]:%@", http.url, [CN_NET_Util CN_StringFromMethod:http.method], http.params, http.header, http.cookie);
     
     // 2 request
-    [http _request];
+    [http request];
     
     return http;
 }
@@ -141,162 +124,194 @@
     [CN_NET_Queue CN_CancelAll];
 }
 
-#pragma mark - Private Methods
-#pragma mark request
-- (void)_request {
+// MARK:- Private
+// MARK: └ 环境配置
++ (void)config_env:(CN_NET_ENV_TYPE)type
+           scheme:(CN_URL_SCHEME)scheme
+             host:(NSString *)host
+             port:(NSString *)port {
+    // 0.1 key
+    NSString *key_id = NSStringFromClass(self);
+    NSString *key_envType = [NSString stringWithFormat:@"%lu", (unsigned long)type];
+    NSString *key = [NSString stringWithFormat:@"%@_%@", key_id, key_envType];
+    // 0.2 value
+    NSDictionary *env = @{
+                          @"scheme" : [CN_NET_Util CN_StringFromScheme:scheme],
+                          @"host" : host,
+                          @"port" : port
+                          };
+    // 1 chche
+    [CN_NET_Service CN_Instance].envs[key] = env;
+}
+
+// MARK: └ 请求
+- (void)request {
     // request
     switch (self.method) {
         case CN_REQ_METHOD_GET: {
-            [self _GET];
+            [self request_get];
         }
             break;
         case CN_REQ_METHOD_POST: {
-            [self _POST];
+            [self request_post];
         }
             break;
         case CN_REQ_METHOD_FORM: {
-            [self _FORM];
+            [self request_form];
         }
             break;
     }
     // handle task
-    [self _handleTask];
+    [self task_cache];
 }
 
-- (void)_GET {
+- (void)request_get {
     self.task = [self.sessionManager GET:self.url parameters:self.params progress:^(NSProgress * _Nonnull downloadProgress) {
-        [self _handleProgress:downloadProgress];
+        [self response_progress:downloadProgress];
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self _handleSuccess:responseObject];
+        [self response_success:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self _handleFailure:error];
+        [self response_failure:error];
     }];
 }
 
-- (void)_POST {
+- (void)request_post {
     self.task = [self.sessionManager POST:self.url parameters:self.params progress:^(NSProgress * _Nonnull uploadProgress) {
-        [self _handleProgress:uploadProgress];
+        [self response_progress:uploadProgress];
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self _handleSuccess:responseObject];
+        [self response_success:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self _handleFailure:error];
+        [self response_failure:error];
     }];
 }
 
-- (void)_FORM {
+- (void)request_form {
     self.task = [self.sessionManager POST:self.url parameters:self.params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSArray *allNames = [self.formData allKeys];
         for (NSString *name in allNames) {
             [formData appendPartWithFormData:self.formData[name] name:name];
         }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
-        [self _handleProgress:uploadProgress];
+        [self response_progress:uploadProgress];
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self _handleSuccess:responseObject];
+        [self response_success:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self _handleFailure:error];
+        [self response_failure:error];
     }];
 }
 
-#pragma mark handle task
-
-- (void)_handleTask {
+// MARK: └ 任务
+- (void)task_cache {
     if (self.requestErrorCount == 0) {
         [CN_NET_Queue CN_AddTask:self.task];
     }
 }
 
-#pragma mark handle callback
-- (void)_handleProgress:(NSProgress * _Nonnull)progress {
-    if (self.callback_progress) {
-        CGFloat p = progress.completedUnitCount * 1.0 / progress.totalUnitCount;
-        NSLog(@"The current progress is:%lf", p);
-        self.callback_progress(p);
-    }
+// MARK: └ 响应
+- (void)response_progress:(NSProgress * _Nonnull)progress {
+    CGFloat p = progress.completedUnitCount * 1.0 / progress.totalUnitCount;
+    NSLog(@"The current progress is:%lf", p);
+    [self callback_progress:p];
 }
 
-- (void)_handleSuccess:(id _Nullable)responseObject {
+- (void)response_success:(id _Nullable)responseObject {
     NSLog(@"\n✅✅✅ Success.");
     id result = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
     NSLog(@"\n%@", result);
-    if (self.callback_success) {
-        self.callback_success(result);
-    }
+    [self callback_success:result];
 }
 
-- (void)_handleFailure:(NSError * _Nonnull)error {
+- (void)response_failure:(NSError * _Nonnull)error {
     _requestErrorCount++;
     if ((error.code == -1009 || error.code == -1005) && _requestErrorCount <= CN_NET_RECONNECT_COUNT) {
         NSLog(@"\n♻️♻️♻️ Try reconnecting...");
-        [self _request];
+        [self request];
     } else {
         NSLog(@"\n❌❌❌ Failure.\n[Code]:%ld\n[Desc]:%@", error.code, error.localizedDescription);
-        if (self.callback_failure) {
-            self.callback_failure(error.localizedDescription);
-        }
+        [self callback_failure:error];
+    }
+}
+
+// MARK: └ 回调
+- (void)callback_progress:(CGFloat)progress {
+    if (self.progressBlock) {
+        self.progressBlock(progress);
+    }
+}
+
+- (void)callback_success:(id _Nullable)result {
+    if (self.successBlock) {
+        self.successBlock(result);
+    }
+}
+
+- (void)callback_failure:(NSError * _Nonnull)error {
+    if (self.failureBlock) {
+        self.failureBlock(error.localizedDescription);
     }
 }
 
 #pragma mark - Setter/Getter
 
 - (NSString *)url {
-    if (!_url) {    // 完整URL > 全局配置 > 默认
+    // 优先级： 完整URL（1） > 配置（2） > 默认（3）
+    if (!_url) {    //
         // URL...
-        NSString *scheme;
-        NSString *host;
-        NSString *port;
-        NSString *path;
+        NSString *scheme = @"";
+        NSString *host = @"";
+        NSString *port = @"";
+        NSString *path = @"";
         
-        // 全局配置
-        NSString *key_id = NSStringFromClass([self class]);
-        CN_NET_ENV type = [CN_NET_Service CN_Instance].type;
-        NSString *key_type = [NSString stringWithFormat:@"%lu", (unsigned long)type];
-        NSString *key = [NSString stringWithFormat:@"%@_%@", key_id, key_type];
-        NSDictionary *envDic = [CN_NET_Service CN_Instance].env;
-        CN_NET_URL *model = envDic[key];
-        if (type == CN_NET_ENV_LOCAL) {  // 本地环境优先
-            CN_NET_URL *env_loc = [CN_NET_Service CN_Instance].env_local;
-            scheme = env_loc.scheme;
-            host = env_loc.host;
-            port = env_loc.port;
-        } else {
-            // 1 scheme
-            if (self.scheme) {
-                scheme = [CN_NET_Util CN_StringFromScheme:self.scheme];
-            } else if (model.scheme.length) {
-                scheme = model.scheme;
-            } else {
-                scheme = @"http://";
-            }
+        // 配置
+        CN_NET_ENV_TYPE type = [CN_NET_Service CN_Instance].type;
+    
+        if (type == CN_NET_ENV_TYPE_CUSTOM) {  // 自定义配置（2.1）
+            NSDictionary *env_custom = [CN_NET_Service CN_Instance].env_custom;
+            scheme = env_custom[@"scheme"] ? [NSString stringWithFormat:@"%@://", env_custom[@"scheme"]]: @"";
+            host = env_custom[@"host"] ?: @"";
+            port = env_custom[@"port"] ? [NSString stringWithFormat:@":%@", env_custom[@"port"]] : @"";
+        } else {                                // 全局配置（2.2）
             
-            // 2 host
-            if (self.host.length) {
-                host = self.host;
-            } else if (model.host.length) {
-                host = model.host;
-            } else {
-                host = @"";
-            }
+            NSString *key = [self CN_KeyWithEnvType:type];
+            NSDictionary *envs = [CN_NET_Service CN_Instance].envs;
+            NSDictionary *env = envs[key];
             
-            // 3 port
-            if (self.port.length) {
-                port = self.port;
-            } else if (model.port.length) {
-                port = model.port;
+            if (!env) {
+                NSLog(@"❌❌❌ 请配置环境！！！");
             } else {
-                port = @"";
-            }
-            if (port.length) {
-                port = [@":" stringByAppendingString:port];
+                // url.scheme
+                NSString *url_scheme = env[@"scheme"];
+                if (url_scheme.length) {
+                    scheme = [NSString stringWithFormat:@"%@://", url_scheme];
+                } else {
+                    NSLog(@"❌❌❌ 请配置 scheme !!!");
+                }
+                
+                // url.host
+                NSString *url_host = env[@"host"];
+                if (url_host.length) {
+                    host = url_host;
+                } else {
+                    NSLog(@"❌❌❌ 请配置 host !!!");
+                }
+                
+                // url.port
+                NSString *url_port = env[@"port"];
+                if (url_port.length) {
+                    port = [NSString stringWithFormat:@":%@", url_port];
+                } else {
+                    NSLog(@"❌❌❌ 请配置 port !!!");
+                }
             }
         }
         
-        // 4 path
-        path = self.path ? : @"";
+        // url.path
+        if (self.path.length) {
+            path = self.path;
+        }
         
-        // 0 URL
-        NSString *url = [NSString stringWithFormat:@"%@%@%@%@", scheme, host, port, path];
-        return url;
+        // URL
+        return [NSString stringWithFormat:@"%@%@%@%@", scheme, host, port, path];
     }
     return _url;
 }

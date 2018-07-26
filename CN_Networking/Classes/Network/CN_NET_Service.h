@@ -1,30 +1,29 @@
 
 #import <Foundation/Foundation.h>
 #import "CN_NET_Constant.h"
-#import "CN_NET_URL.h"
 
 @interface CN_NET_Service : NSObject
 
 /**
  单例
- 
+
  @return -
  */
 + (instancetype)CN_Instance;
 
 /**
- 环境类型
+ 环境类型(持久化)
  */
-@property (nonatomic, assign) CN_NET_ENV type;
+@property (nonatomic, assign) CN_NET_ENV_TYPE type;
 
 /**
- 环境配置信息
+ URL配置-非自定义
  */
-@property (nonatomic, strong) NSMutableDictionary <NSString *, CN_NET_URL *>*env;
+@property (nonatomic, strong) NSMutableDictionary <NSString *, NSDictionary *>*envs;
 
 /**
- 本地环境配置信息
+ URL配置-自定义(持久化)
  */
-@property (nonatomic, strong) CN_NET_URL *env_local;
+@property (nonatomic, strong) NSDictionary *env_custom;
 
 @end 

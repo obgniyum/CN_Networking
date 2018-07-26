@@ -7,7 +7,7 @@
 //
 
 #import "XXViewController.h"
-#import "CN_Networking.h"
+#import "XX_Network.h"
 
 
 @interface XXViewController ()
@@ -18,27 +18,22 @@
 
 @implementation XXViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
     btn.backgroundColor = [UIColor redColor];
+    [btn setTitle:@"request" forState:UIControlStateNormal];
     btn.frame = CGRectMake(200, 300, 100, 30);
     [self.view addSubview:btn];
-    [btn addTarget:self action:@selector(xxx) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(request_test) forControlEvents:UIControlEventTouchUpInside];
 
 }
 
-- (void)xxx {
-    [[CN_NET_Float CN_Instance] cn_show:NO];
-}
-
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    
-    [CN_Network CN_Request:^(CN_Network *http) {
-        http.path = @"/xm/login";
+- (void)request_test {
+    [XX_Network CN_Request:^(CN_Network *http) {
+//        http.url = @"http://192.168.0.136:8080/xm/user";
+        http.path = @"/xm/user";
         http.method = CN_REQ_METHOD_POST;
         http.params = @{
                         @"k" : @"v"
@@ -49,18 +44,14 @@
                         };
         http.timeout = 30.f;
     } success:^(id result) {
-
+        
     } failure:^(NSString *errMsg) {
-
+        
     }];
-
-//    [[CN_NET_Float CN_Instance] cn_show:YES];
-
-    
 }
 
-- (void)didReceiveMemoryWarning
-{
+
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 

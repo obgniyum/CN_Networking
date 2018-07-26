@@ -26,36 +26,30 @@
 
 #pragma mark - Setter/Getter
 
-- (void)setType:(CN_NET_ENV)type {
+- (void)setType:(CN_NET_ENV_TYPE)type {
     [[NSUserDefaults standardUserDefaults] setInteger:type forKey:kCN_NET_ENV_TYPE];
 }
 
-- (CN_NET_ENV)type {
-    CN_NET_ENV type = [[NSUserDefaults standardUserDefaults] integerForKey:kCN_NET_ENV_TYPE];
+- (CN_NET_ENV_TYPE)type {
+    CN_NET_ENV_TYPE type = [[NSUserDefaults standardUserDefaults] integerForKey:kCN_NET_ENV_TYPE];
     return type;
 }
 
-- (void)setEnv_local:(CN_NET_URL *)env_local {
-    [[NSUserDefaults standardUserDefaults] setObject:env_local.scheme forKey:kCN_NET_ENV_LOC_SCHEME];
-    [[NSUserDefaults standardUserDefaults] setObject:env_local.host forKey:kCN_NET_ENV_LOC_HOST];
-    [[NSUserDefaults standardUserDefaults] setObject:env_local.port forKey:kCN_NET_ENV_LOC_PORT];
+- (void)setEnv_custom:(NSDictionary *)env_custom {
+    [[NSUserDefaults standardUserDefaults] setObject:env_custom forKey:kCN_NET_ENV_TYPE_CUSTOM];
 }
 
-- (CN_NET_URL *)env_local {
-    CN_NET_URL *url = [[CN_NET_URL alloc] init];
-    url.scheme = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_SCHEME] ? : @"";
-    url.host = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_HOST] ? : @"";
-    url.port = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_PORT] ? : @"";
-    return url;
+- (NSDictionary *)env_custom {
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kCN_NET_ENV_TYPE_CUSTOM];
 }
 
 #pragma mark - Lazy
 
-- (NSMutableDictionary<NSString *,CN_NET_URL *> *)env {
-    if (!_env) {
-        _env = [NSMutableDictionary dictionary];
+- (NSMutableDictionary<NSString *,NSDictionary *> *)envs {
+    if (!_envs) {
+        _envs = [NSMutableDictionary dictionary];
     }
-    return _env;
+    return _envs;
 }
 
 @end

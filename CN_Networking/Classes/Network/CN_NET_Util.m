@@ -7,10 +7,10 @@
 + (NSString *)CN_StringFromScheme:(CN_URL_SCHEME)scheme {
     switch (scheme) {
         case CN_URL_SCHEME_HTTP:
-            return @"http://";
+            return @"http";
             break;
         case CN_URL_SCHEME_HTTPS:
-            return @"https://";
+            return @"https";
             break;
     }
 }

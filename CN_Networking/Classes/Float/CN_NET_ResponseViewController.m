@@ -5,22 +5,29 @@
 //  Created by Obgniyum on 2018/7/26.
 //
 
-#import "CN_NET_RequestDetailViewController.h"
+#import "CN_NET_ResponseViewController.h"
 
-@interface CN_NET_RequestDetailViewController ()
+@interface CN_NET_ResponseViewController ()
 
 @property (strong, nonatomic) UITextView *tv;
 
 @end
 
-@implementation CN_NET_RequestDetailViewController
+@implementation CN_NET_ResponseViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupViews];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+// MARK:- UI
+- (void)setupViews {
+    self.navigationItem.title = @"Response";
     
-    self.navigationItem.title = @"Request Detail";
-    
-//    UIColor *selectedColor = [UIColor colorWithRed:32 / 255.0 green:136 / 255.0 blue:22 / 255.0 alpha:1];
     [self.view addSubview:self.tv];
     self.tv.frame = CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64);
     if (self.successData) {
@@ -32,10 +39,7 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+// MARK:- Lazy
 
 - (UITextView *)tv {
     if (!_tv) {

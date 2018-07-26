@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		38249D1F3B63B085FE49AD25 /* Pods_CN_Networking_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 126679B0DB411BD34ADC35DF /* Pods_CN_Networking_Example.framework */; };
+		5CC1099D2109EAFE00CAD6D1 /* XX_Network.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1099C2109EAFE00CAD6D1 /* XX_Network.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -42,6 +43,8 @@
 		1B28EB4BE9ED9A45464DDBAE /* Pods-CN_Networking_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CN_Networking_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CN_Networking_Example/Pods-CN_Networking_Example.release.xcconfig"; sourceTree = "<group>"; };
 		2A292EBC579681FC70830ED6 /* Pods_CN_Networking_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CN_Networking_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F7E5D89D5238E7F2512BDF7 /* CN_Networking.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CN_Networking.podspec; path = ../CN_Networking.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5CC1099B2109EAFE00CAD6D1 /* XX_Network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XX_Network.h; sourceTree = "<group>"; };
+		5CC1099C2109EAFE00CAD6D1 /* XX_Network.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XX_Network.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* CN_Networking_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CN_Networking_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -136,6 +139,8 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* XXViewController.h */,
 				6003F5A6195388D20070C39A /* XXViewController.m */,
+				5CC1099B2109EAFE00CAD6D1 /* XX_Network.h */,
+				5CC1099C2109EAFE00CAD6D1 /* XX_Network.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -355,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CC1099D2109EAFE00CAD6D1 /* XX_Network.m in Sources */,
 				6003F59E195388D20070C39A /* XXAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* XXViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,

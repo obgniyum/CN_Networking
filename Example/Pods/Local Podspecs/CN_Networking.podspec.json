@@ -1,6 +1,6 @@
 {
   "name": "CN_Networking",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "summary": "A short description of CN_Networking.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/obgniyum/CN_Networking",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/obgniyum/CN_Networking.git",
-    "tag": "0.1.0"
+    "tag": "0.2.0"
   },
   "platforms": {
     "ios": "8.0"
@@ -47,6 +47,10 @@
 
         ]
       }
+    },
+    {
+      "name": "Readable",
+      "source_files": "CN_Networking/Classes/Readable/*.{h,m}"
     }
   ]
 }

@@ -1,7 +1,8 @@
 
 #import "CN_NET_Float.h"
 #import <UIKit/UIKit.h>
-#import "CN_NET_RequestListViewController.h"
+#import "CN_NET_RequestViewController.h"
+#import "CN_NET_EnvironmentSettingViewController.h"
 
 @interface CN_NET_Float()
 
@@ -11,6 +12,7 @@
 
 @implementation CN_NET_Float
 
+// MARK:- Life
 + (instancetype)CN_Instance {
     static id instance = nil;
     static dispatch_once_t onceToken;
@@ -28,10 +30,11 @@
     return [[self class] CN_Instance];
 }
 
+// MARK:- Public
 - (void)cn_show:(BOOL)show {
     if (show) {
         if (self.w == nil) {
-            [self performSelectorOnMainThread:@selector(_show) withObject:nil waitUntilDone:NO];
+            [self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
         }
     } else {
         [self.w setHidden:YES];
@@ -40,14 +43,14 @@
     }
 }
 
-- (void)_show {
+// MARK:- Private
+- (void)show {
     
     CGSize size = [UIScreen mainScreen].bounds.size;
     UIColor *c = [UIColor colorWithRed:71 / 255.0 green:156 / 255.0 blue:228 / 255.0 alpha:1];
     
     self.w = [[UIWindow alloc] init];
     self.w.windowLevel = 2001;
-    
     self.w.frame = CGRectMake(size.width - 40, size.height - 80, 40, 40);
     self.w.backgroundColor = UIColor.clearColor;
     [self.w makeKeyAndVisible];
@@ -60,28 +63,26 @@
     btn.backgroundColor = [UIColor clearColor];
     btn.frame = self.w.bounds;
     [self.w addSubview:btn];
-    [btn addTarget:self action:@selector(_action_click) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(action_click) forControlEvents:UIControlEventTouchUpInside];
     btn.adjustsImageWhenHighlighted = NO;
     [btn setTitle:@"NET" forState:UIControlStateNormal];
     [btn setTitleColor:c forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont boldSystemFontOfSize:13];
     
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_action_pan:)];
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(action_pan:)];
     [self.w addGestureRecognizer:pan];
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(_action_longPress:)];
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(action_longPress:)];
     [self.w addGestureRecognizer:longPress];
     
 }
-
-- (void)_action_click {
-    NSLog(@"click");
-    
-    CN_NET_RequestListViewController *vc = [[CN_NET_RequestListViewController alloc] init];
+// MARK:- Action
+- (void)action_click {
+    CN_NET_RequestViewController *vc = [[CN_NET_RequestViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
     [[UIApplication sharedApplication].windows.firstObject.rootViewController presentViewController:navi animated:YES completion:nil];
 }
 
-- (void)_action_pan:(UIPanGestureRecognizer *)ges {
+- (void)action_pan:(UIPanGestureRecognizer *)ges {
     if (ges.state == UITouchPhaseEnded) {
         
     } else {
@@ -112,13 +113,16 @@
     }
 }
 
-- (void)_action_longPress:(UILongPressGestureRecognizer *)ges {
+- (void)action_longPress:(UILongPressGestureRecognizer *)ges {
     if (ges.state != UIGestureRecognizerStateBegan) {
         return;
     }
-    NSLog(@"present");
+    CN_NET_EnvironmentSettingViewController *vc = [[CN_NET_EnvironmentSettingViewController alloc] init];
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
+    [[UIApplication sharedApplication].windows.firstObject.rootViewController presentViewController:navi animated:YES completion:nil];
 }
 
+// MARK:- Lazy
 - (NSMutableArray<NSMutableDictionary *> *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
