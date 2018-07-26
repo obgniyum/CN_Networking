@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CN_Networking'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'A short description of CN_Networking.'
 
 # This description is used to generate tags and improve search results.
@@ -30,11 +30,22 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '8.0'
 
+  s.source_files = 'CN_Networking/Classes/*.{h}'
   s.source_files = 'CN_Networking/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'CN_Networking' => ['CN_Networking/Assets/*.png']
-  # }
+  s.subspec 'Network' do |s1|
+      s1.source_files = 'CN_Networking/Classes/Network/*.{h,m}'
+      s1.dependency 'AFNetworking'
+  end
+  
+  s.subspec 'Float' do |s2|
+      s2.source_files = 'CN_Networking/Classes/Float/*.{h,m}'
+      s2.dependency 'CN_Networking/Network'
+  end
+  
+  s.resource_bundles = {
+      'CN_Networking' => ['CN_Networking/**/*.{md}']
+  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

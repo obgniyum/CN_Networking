@@ -1,7 +1,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CN_NET_Constant.h"
-#import "CN_NET_Model.h"
+#import "CN_NET_URL.h"
 
 @interface CN_NET_Service : NSObject
 
@@ -20,11 +20,11 @@
 /**
  环境配置信息
  */
-@property (nonatomic, strong) NSMutableDictionary <NSString *, CN_NET_Model *>*env;
+@property (nonatomic, strong) NSMutableDictionary <NSString *, CN_NET_URL *>*env;
 
 /**
  本地环境配置信息
  */
-@property (nonatomic, strong) CN_NET_Model *env_local;
+@property (nonatomic, strong) CN_NET_URL *env_local;
 
 @end 

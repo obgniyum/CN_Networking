@@ -3,7 +3,7 @@
 #import "CN_NET_Protocol.h"
 #import "CN_NET_Constant.h"
 
-@interface CN_HTTP : NSObject <CN_NET_Protocol>
+@interface CN_Network : NSObject <CN_NET_Protocol>
 
 // MARK:- Request framework
 /**
@@ -16,7 +16,7 @@
  @param failure failure callback
  @return self
  */
-+ (instancetype)CN_Request:(void(^)(CN_HTTP *http))request success:(void(^)(id result))success failure:(void(^)(NSString *errMsg))failure;
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request success:(void(^)(id result))success failure:(void(^)(NSString *errMsg))failure;
 
 /**
  Request framework (progress)
@@ -29,7 +29,7 @@
  @param failure failure callback
  @return self
  */
-+ (instancetype)CN_Request:(void(^)(CN_HTTP *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id))success failure:(void(^)(NSString *))failure;
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id))success failure:(void(^)(NSString *))failure;
 
 // MARK:- Request Configuration
 @property (nonatomic, assign) CN_REQ_METHOD method; /** URL */

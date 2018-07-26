@@ -1,12 +1,12 @@
 
-#import "CN_HTTP.h"
+#import "CN_Network.h"
 #import "AFNetworking.h"
 #import "CN_NET_Util.h"
 #import "CN_NET_Queue.h"
-#import "CN_NET_Model.h"
+#import "CN_NET_URL.h"
 #import "CN_NET_Service.h"
 
-@interface CN_HTTP ()
+@interface CN_Network ()
 
 /**
  请求会话
@@ -36,7 +36,7 @@
 
 @end
 
-@implementation CN_HTTP
+@implementation CN_Network
 
 #pragma mark - Life Cycle
 
@@ -85,7 +85,7 @@
     NSString *key_env = [NSString stringWithFormat:@"%lu", (unsigned long)env];
     NSString *key = [NSString stringWithFormat:@"%@_%@", key_id, key_env];
     // 0.2 value
-    CN_NET_Model *model = [CN_NET_Model new];
+    CN_NET_URL *model = [CN_NET_URL new];
     model.scheme = [CN_NET_Util CN_StringFromScheme:scheme];
     model.host = host;
     model.port = port;
@@ -99,9 +99,9 @@
 }
 
 // MARK: └ 请求
-+ (instancetype)CN_Request:(void(^)(CN_HTTP *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id))success failure:(void(^)(NSString *))failure {
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id))success failure:(void(^)(NSString *))failure {
     // 0 new
-    CN_HTTP *http = [[self alloc] init];
+    CN_Network *http = [[self alloc] init];
     
     // 1 config
     request(http);
@@ -120,12 +120,7 @@
         [http.sessionManager.requestSerializer setValue:[kvs componentsJoinedByString:@"; "] forHTTPHeaderField:@"Cookie"];
     }
     // 1.2 log
-    NSLog(@"\nRequesting...\n[URL]:%@\n[Method]:%@\n[Params]:%@\n[Header]:%@\n[Cookie]:%@",
-          http.url,
-          [CN_NET_Util CN_StringFromMethod:http.method],
-          http.params,
-          http.header,
-          http.cookie);
+    NSLog(@"\nRequesting...\n[U-R-L]:%@\n[Method]:%@\n[Params]:%@\n[Header]:%@\n[Cookie]:%@", http.url, [CN_NET_Util CN_StringFromMethod:http.method], http.params, http.header, http.cookie);
     
     // 2 request
     [http _request];
@@ -133,7 +128,7 @@
     return http;
 }
 
-+ (instancetype)CN_Request:(void(^)(CN_HTTP *http))request success:(void(^)(id result))success failure:(void(^)(NSString *errMsg))failure {
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request success:(void(^)(id result))success failure:(void(^)(NSString *errMsg))failure {
     return [self CN_Request:request progress:nil success:success failure:failure];
 }
 
@@ -147,7 +142,7 @@
 }
 
 #pragma mark - Private Methods
-#pragma mark request method
+#pragma mark request
 - (void)_request {
     // request
     switch (self.method) {
@@ -258,9 +253,9 @@
         NSString *key_type = [NSString stringWithFormat:@"%lu", (unsigned long)type];
         NSString *key = [NSString stringWithFormat:@"%@_%@", key_id, key_type];
         NSDictionary *envDic = [CN_NET_Service CN_Instance].env;
-        CN_NET_Model *model = envDic[key];
+        CN_NET_URL *model = envDic[key];
         if (type == CN_NET_ENV_LOCAL) {  // 本地环境优先
-            CN_NET_Model *env_loc = [CN_NET_Service CN_Instance].env_local;
+            CN_NET_URL *env_loc = [CN_NET_Service CN_Instance].env_local;
             scheme = env_loc.scheme;
             host = env_loc.host;
             port = env_loc.port;
@@ -340,7 +335,6 @@
     }
     return _formData;
 }
-
 
 @end
 

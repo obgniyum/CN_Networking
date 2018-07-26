@@ -35,23 +35,23 @@
     return type;
 }
 
-- (void)setEnv_local:(CN_NET_Model *)env_local {
+- (void)setEnv_local:(CN_NET_URL *)env_local {
     [[NSUserDefaults standardUserDefaults] setObject:env_local.scheme forKey:kCN_NET_ENV_LOC_SCHEME];
     [[NSUserDefaults standardUserDefaults] setObject:env_local.host forKey:kCN_NET_ENV_LOC_HOST];
     [[NSUserDefaults standardUserDefaults] setObject:env_local.port forKey:kCN_NET_ENV_LOC_PORT];
 }
 
-- (CN_NET_Model *)env_local {
-    CN_NET_Model *model = [[CN_NET_Model alloc] init];
-    model.scheme = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_SCHEME] ? : @"";
-    model.host = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_HOST] ? : @"";
-    model.port = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_PORT] ? : @"";
-    return model;
+- (CN_NET_URL *)env_local {
+    CN_NET_URL *url = [[CN_NET_URL alloc] init];
+    url.scheme = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_SCHEME] ? : @"";
+    url.host = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_HOST] ? : @"";
+    url.port = [[NSUserDefaults standardUserDefaults] objectForKey:kCN_NET_ENV_LOC_PORT] ? : @"";
+    return url;
 }
 
 #pragma mark - Lazy
 
-- (NSMutableDictionary<NSString *,CN_NET_Model *> *)env {
+- (NSMutableDictionary<NSString *,CN_NET_URL *> *)env {
     if (!_env) {
         _env = [NSMutableDictionary dictionary];
     }
