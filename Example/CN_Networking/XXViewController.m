@@ -45,8 +45,8 @@
         http.timeout = 30.f;
     } success:^(id result) {
         
-    } failure:^(NSString *errMsg) {
-        
+    } failure:^(NSError *error) {
+        NSLog(@"%@", error.localizedDescription);
     }];
 }
 

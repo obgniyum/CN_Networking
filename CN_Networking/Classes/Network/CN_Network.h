@@ -7,18 +7,6 @@
 
 // MARK:- Request framework
 /**
- Request framework
- 
- ps: you don't have to use weakself in request block
- 
- @param request request object callback in order to set request message
- @param success success callback
- @param failure failure callback
- @return self
- */
-+ (instancetype)CN_Request:(void(^)(CN_Network *http))request success:(void(^)(id result))success failure:(void(^)(NSString *errMsg))failure;
-
-/**
  Request framework (progress)
  
  ps: you don't have to use weakself in request block
@@ -27,9 +15,20 @@
  @param progress progress callback
  @param success success callback
  @param failure failure callback
- @return self
+ @return instancetype
  */
-+ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id))success failure:(void(^)(NSString *))failure;
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id result))success failure:(void(^)(NSError *error))failure;
+/**
+ Request framework
+ 
+ ps: you don't have to use weakself in request block
+ 
+ @param request request object callback in order to set request message
+ @param success success callback
+ @param failure failure callback
+ @return instancetype
+ */
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request success:(void(^)(id result))success failure:(void(^)(NSError *error))failure;
 
 // MARK:- Request Configuration
 @property (nonatomic, assign) CN_REQ_METHOD method; /** URL */
