@@ -14,17 +14,17 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - CN_Networking (0.2.0):
+  - CN_Networking (0.3.1):
     - AFNetworking
-    - CN_Networking/Float (= 0.2.0)
-    - CN_Networking/Network (= 0.2.0)
-    - CN_Networking/Readable (= 0.2.0)
-  - CN_Networking/Float (0.2.0):
+    - CN_Networking/Float (= 0.3.1)
+    - CN_Networking/Network (= 0.3.1)
+    - CN_Networking/Readable (= 0.3.1)
+  - CN_Networking/Float (0.3.1):
     - AFNetworking
     - CN_Networking/Network
-  - CN_Networking/Network (0.2.0):
+  - CN_Networking/Network (0.3.1):
     - AFNetworking
-  - CN_Networking/Readable (0.2.0):
+  - CN_Networking/Readable (0.3.1):
     - AFNetworking
 
 DEPENDENCIES:
@@ -40,7 +40,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CN_Networking: c9808ef420c4b5210b7b2532b3aecfe6e5bd280d
+  CN_Networking: a496aa1e6b6cfeef6a3bb90a621571a8bf29b331
 
 PODFILE CHECKSUM: 8a7c7fcbbd97eaf11e9c637a1257c4899716fc87
 

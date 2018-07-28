@@ -1,7 +1,7 @@
 
 
-#import "CN_NET_FloatBaseViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface CN_NET_EnvironmentSettingViewController : CN_NET_FloatBaseViewController
+@interface CN_NET_EnvironmentSettingViewController : UIViewController
 
 @end

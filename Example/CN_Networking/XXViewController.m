@@ -31,6 +31,15 @@
 }
 
 - (void)request_test {
+    
+    [CN_Network CN_Request:^(CN_Network *http) {
+        
+    } success:^(id result) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
     [XX_Network CN_Request:^(CN_Network *http) {
 //        http.url = @"http://192.168.0.136:8080/xm/user";
         http.path = @"/xm/user";
@@ -48,6 +57,8 @@
     } failure:^(NSError *error) {
         NSLog(@"%@", error.localizedDescription);
     }];
+    
+    
 }
 
 

@@ -18,7 +18,12 @@
     
     [[CN_NET_Float CN_Instance] cn_show:YES];
     [CN_Network CN_DEBUG:CN_URL_SCHEME_HTTP host:@"192.168.0.136" port:@"8080"];
-    [XX_Network CN_DEBUG:CN_URL_SCHEME_HTTP host:@"192.168.0.136" port:@"8080"];
+//    [CN_Network CN_TEST:CN_URL_SCHEME_HTTP host:@"192.168.0.137" port:@"8080"];
+//    [CN_Network CN_RELEASE:CN_URL_SCHEME_HTTP host:@"192.168.0.138" port:@"8080"];
+//
+//    [XX_Network CN_DEBUG:CN_URL_SCHEME_HTTP host:@"192.168.199.205" port:@"8080"];
+//    [XX_Network CN_TEST:CN_URL_SCHEME_HTTP host:@"192.168.199.206" port:@"8080"];
+//    [XX_Network CN_RELEASE:CN_URL_SCHEME_HTTP host:@"192.168.199.207" port:@"8080"];
     
     return YES;
 }
