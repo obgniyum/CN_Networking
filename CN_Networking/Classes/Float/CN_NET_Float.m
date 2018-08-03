@@ -1,7 +1,7 @@
 
 #import "CN_NET_Float.h"
 #import <UIKit/UIKit.h>
-#import "CN_NET_RequestViewController.h"
+#import "CN_NET_RequestListViewController.h"
 #import "CN_NET_EnvironmentSettingViewController.h"
 
 @interface CN_NET_Float()
@@ -77,7 +77,7 @@
 }
 // MARK:- Action
 - (void)action_click {
-    CN_NET_RequestViewController *vc = [[CN_NET_RequestViewController alloc] init];
+    CN_NET_RequestListViewController *vc = [[CN_NET_RequestListViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
     [[UIApplication sharedApplication].windows.firstObject.rootViewController presentViewController:navi animated:YES completion:nil];
 }

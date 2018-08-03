@@ -17,7 +17,7 @@
  @param failure failure callback
  @return instancetype
  */
-+ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id result))success failure:(void(^)(NSError *error))failure;
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(float pValue))progress success:(void(^)(id result))success failure:(void(^)(NSError *error))failure;
 /**
  Request framework
  

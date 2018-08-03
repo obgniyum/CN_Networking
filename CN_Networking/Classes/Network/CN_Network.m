@@ -24,7 +24,7 @@
 /**
  进度回调
  */
-@property (nonatomic, copy) void(^progressBlock)(CGFloat p);
+@property (nonatomic, copy) void(^progressBlock)(float p);
 /**
  成功回调
  */
@@ -82,7 +82,7 @@
 }
 
 // MARK: └ 请求
-+ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(CGFloat))progress success:(void(^)(id result))success failure:(void(^)(NSError *error))failure {
++ (instancetype)CN_Request:(void(^)(CN_Network *http))request progress:(void(^)(float pValue))progress success:(void(^)(id result))success failure:(void(^)(NSError *error))failure {
     // 0 new
     CN_Network *http = [[self alloc] init];
     
@@ -216,8 +216,8 @@
 
 // MARK: └ 响应
 - (void)response_progress:(NSProgress * _Nonnull)progress {
-    CGFloat p = progress.completedUnitCount * 1.0 / progress.totalUnitCount;
-    NSLog(@"The current progress is:%lf", p);
+    float p = progress.completedUnitCount * 1.0 / progress.totalUnitCount;
+//    NSLog(@"The current progress is:%lf", p);
     [self callback_progress:p];
 }
 
@@ -240,7 +240,7 @@
 }
 
 // MARK: └ 回调
-- (void)callback_progress:(CGFloat)progress {
+- (void)callback_progress:(float)progress {
     if (self.progressBlock) {
         self.progressBlock(progress);
     }

@@ -1,17 +1,17 @@
 
 
-#import "CN_NET_RequestViewController.h"
+#import "CN_NET_RequestListViewController.h"
 #import "CN_NET_Float.h"
-#import "CN_NET_ResponseViewController.h"
+#import "CN_NET_RequestAndResponseViewController.h"
 #import "CN_NET_Util.h"
 
-@interface CN_NET_RequestViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface CN_NET_RequestListViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *mainTableView;
 
 @end
 
-@implementation CN_NET_RequestViewController
+@implementation CN_NET_RequestListViewController
 
 // MARK:- Life
 - (void)viewDidLoad {
@@ -62,15 +62,18 @@
         cell.textLabel.textColor = UIColor.redColor;
         cell.detailTextLabel.textColor = UIColor.redColor;
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld. \t%@", indexPath.row + 1, data[@"url"]];
+    cell.textLabel.numberOfLines = 0;
+    NSString *number = [NSString stringWithFormat:@"%ld", indexPath.row + 1];
     NSString *method = [CN_NET_Util CN_StringFromMethod:(CN_REQ_METHOD)([data[@"method"] integerValue])];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"\t%@", method];
+    NSString *time = [data[@"time"] description];
+    NSString *url = data[@"url"];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@.\t%@\t%@\n%@", number, method, time, url];
     return cell;
 }
 
 // MARK: └ UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CN_NET_ResponseViewController *detail = [[CN_NET_ResponseViewController alloc] init];
+    CN_NET_RequestAndResponseViewController *detail = [[CN_NET_RequestAndResponseViewController alloc] init];
     NSDictionary *data = [CN_NET_Float CN_Instance].dataSource[indexPath.row];
     if (data[@"success"]) {
         detail.successData = data;
@@ -88,6 +91,7 @@
         _mainTableView.dataSource = self;
         _mainTableView.delegate = self;
         _mainTableView.tableFooterView = [UIView new];
+        _mainTableView.estimatedRowHeight = UITableViewAutomaticDimension;
     }
     return _mainTableView;
 }

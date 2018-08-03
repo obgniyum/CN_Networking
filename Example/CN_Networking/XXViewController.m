@@ -31,21 +31,14 @@
 }
 
 - (void)request_test {
-    
-    [CN_Network CN_Request:^(CN_Network *http) {
-        
-    } success:^(id result) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
-    
+
     [XX_Network CN_Request:^(CN_Network *http) {
-//        http.url = @"http://192.168.0.136:8080/xm/user";
+        http.url = @"http://ssjy.sooncore.com:9090/sooncore-ykh/api/user/login";
         http.path = @"/xm/user";
         http.method = CN_REQ_METHOD_POST;
         http.params = @{
-                        @"k" : @"v"
+                        @"user_account" : @"18611339842",
+                        @"password" : @"123456"
                         };
         http.cookie = @{
                         @"k" : @"v",
@@ -57,10 +50,7 @@
     } failure:^(NSError *error) {
         NSLog(@"%@", error.localizedDescription);
     }];
-    
-    
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -30,7 +30,7 @@
 - (void)aop_viewWillAppear_cn_net_float:(BOOL)animated {
     [self aop_viewWillAppear_cn_net_float:animated];
     NSString *selfName = NSStringFromClass([self class]);
-    NSArray *targetControllerNames = @[@"CN_NET_RequestViewController", @"CN_NET_EnvironmentSettingViewController"];
+    NSArray *targetControllerNames = @[@"CN_NET_RequestListViewController", @"CN_NET_EnvironmentSettingViewController"];
     for (NSString *name in targetControllerNames) {
         if ([name isEqualToString:selfName]) {
             [[CN_NET_Float CN_Instance] cn_show:NO];
@@ -41,7 +41,7 @@
 - (void)aop_dealloc_cn_net_float {
     NSString *selfName = NSStringFromClass([self class]);
     [self aop_dealloc_cn_net_float];
-    NSArray *targetControllerNames = @[@"CN_NET_RequestViewController", @"CN_NET_EnvironmentSettingViewController"];
+    NSArray *targetControllerNames = @[@"CN_NET_RequestListViewController", @"CN_NET_EnvironmentSettingViewController"];
     for (NSString *name in targetControllerNames) {
         if ([name isEqualToString:selfName]) {
             [[CN_NET_Float CN_Instance] cn_show:YES];

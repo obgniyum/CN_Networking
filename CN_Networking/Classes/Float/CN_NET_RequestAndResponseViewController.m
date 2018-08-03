@@ -5,15 +5,15 @@
 //  Created by Obgniyum on 2018/7/26.
 //
 
-#import "CN_NET_ResponseViewController.h"
+#import "CN_NET_RequestAndResponseViewController.h"
 
-@interface CN_NET_ResponseViewController ()
+@interface CN_NET_RequestAndResponseViewController ()
 
 @property (strong, nonatomic) UITextView *tv;
 
 @end
 
-@implementation CN_NET_ResponseViewController
+@implementation CN_NET_RequestAndResponseViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

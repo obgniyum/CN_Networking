@@ -27,42 +27,46 @@
     }
 }
 
-- (void)aop_request {
-    dispatch_async(dispatch_get_main_queue(), ^{
+- (void)aop_success:(id _Nullable)result {
+    [self aop_success:result];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSMutableDictionary *request = [NSMutableDictionary dictionary];
-        request[@"request"] = self.description;
+        NSDate *date = [NSDate date];
+        NSTimeZone *zone = [NSTimeZone systemTimeZone];
+        NSInteger interval = [zone secondsFromGMTForDate:date];
+        NSDate *localeDate = [date dateByAddingTimeInterval:interval];
+        request[@"time"] = localeDate;
+        request[@"url"] = self.url;
+        request[@"method"] = @(self.method);
+        request[@"params"] = self.params;
+        if (self.header.allKeys.count) {
+            request[@"header"] = self.header;
+        }
+        if (self.cookie.allKeys.count) {
+            request[@"cookie"] = self.cookie;
+        }
+        request[@"success"] = result;
+        [[CN_NET_Float CN_Instance].dataSource addObject:request];
+    });
+}
+
+- (void)aop_failure:(NSError * _Nonnull)error {
+    [self aop_failure:error];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSMutableDictionary *request = [NSMutableDictionary dictionary];
+        NSDate *date = [NSDate date];
+        NSTimeZone *zone = [NSTimeZone systemTimeZone];
+        NSInteger interval = [zone secondsFromGMTForDate:date];
+        NSDate *localeDate = [date dateByAddingTimeInterval:interval];
+        request[@"time"] = localeDate;
         request[@"url"] = self.url;
         request[@"method"] = @(self.method);
         request[@"params"] = self.params;
         request[@"header"] = self.header;
         request[@"cookie"] = self.cookie;
+        request[@"failure"] = error;
         [[CN_NET_Float CN_Instance].dataSource addObject:request];
     });
-    return [self aop_request];
-}
-
-- (void)aop_success:(id _Nullable)result {
-    [self aop_success:result];
-    NSMutableDictionary *request = [NSMutableDictionary dictionary];
-    request[@"url"] = self.url;
-    request[@"method"] = @(self.method);
-    request[@"params"] = self.params;
-    request[@"header"] = self.header;
-    request[@"cookie"] = self.cookie;
-    request[@"success"] = result;
-    [[CN_NET_Float CN_Instance].dataSource addObject:request];
-}
-
-- (void)aop_failure:(NSError * _Nonnull)error {
-    [self aop_failure:error];
-    NSMutableDictionary *request = [NSMutableDictionary dictionary];
-    request[@"url"] = self.url;
-    request[@"method"] = @(self.method);
-    request[@"params"] = self.params;
-    request[@"header"] = self.header;
-    request[@"cookie"] = self.cookie;
-    request[@"failure"] = error;
-    [[CN_NET_Float CN_Instance].dataSource addObject:request];
 }
 
 @end
