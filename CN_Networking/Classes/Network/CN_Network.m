@@ -306,8 +306,6 @@
                 NSString *url_port = env[@"port"];
                 if (url_port.length) {
                     port = [NSString stringWithFormat:@":%@", url_port];
-                } else {
-                    NSLog(@"❌❌❌ 请配置 port !!!");
                 }
             }
         }
